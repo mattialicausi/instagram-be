@@ -8,6 +8,16 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+use Illuminate\Support\Str;
+use App\Models\Storie;
+use App\Models\Follower;
+use App\Models\Post;
+use App\Models\Reaction;
+use App\Models\Comment;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+
+
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -17,11 +27,48 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    protected $guarded = [];
+
+    public static function generateSlug($name)
+    {
+        return Str::slug($name, '-');
+    }
+
+    // 1 user molte storie
+    public function stories(): HasMany
+    {
+
+        return $this->hasMany(Storie::class);
+    }
+
+    // 1 user molte post
+    public function posts(): HasMany
+    {
+
+        return $this->hasMany(Post::class);
+    }
+
+     // 1 user molte reaction
+    public function reactions(): HasMany
+    {
+
+        return $this->hasMany(Reaction::class);
+    }
+
+    // 1 user molte post
+    public function posts(): HasMany
+    {
+
+        return $this->hasMany(Post::class);
+    }
+
+
+    // 1 user molti comment
+    public function comments(): HasMany
+    {
+
+        return $this->hasMany(Comment::class);
+    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -38,6 +85,12 @@ class User extends Authenticatable
      *
      * @var array<string, string>
      */
+
+     public function isAdmin()
+     {
+         return $this->is_admin == true;
+     }
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
