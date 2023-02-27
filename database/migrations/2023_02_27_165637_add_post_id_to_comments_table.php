@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('stories', function (Blueprint $table) {
-            $table->id();
-            $table->string('story_description', 200);
-            $table->text('story_image');
-            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-
-            $table->timestamps();
+        Schema::table('comments', function (Blueprint $table) {
+            $table->unsignedBigInteger('post_id')->nullable();
+            $table->foreign('post_id')->references('id')->on('posts')->onDelete('set null');
         });
     }
 
@@ -30,6 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stories');
+        Schema::table('comments', function (Blueprint $table) {
+            $table->dropForeign('comments_post_id_foreign');
+            $table->dropColumn('post_id');
+        });
     }
 };

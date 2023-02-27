@@ -24,7 +24,7 @@ class Reaction extends Model
     }
 
     // 1 reaction ha un post
-    public function posts(): BelongsTo
+    public function post(): BelongsTo
     {
         return $this->belongsTo(Post::class);
     }

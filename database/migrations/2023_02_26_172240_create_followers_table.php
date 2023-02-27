@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('followers', function (Blueprint $table) {
             $table->id();
+            $table->integer('following_id')->unsigned()->nullable();
+            $table->integer('followed_id')->unsigned()->nullable();
+
             $table->timestamps();
         });
     }

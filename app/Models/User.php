@@ -15,6 +15,8 @@ use App\Models\Post;
 use App\Models\Reaction;
 use App\Models\Comment;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+
 
 
 
@@ -41,6 +43,12 @@ class User extends Authenticatable
         return $this->hasMany(Storie::class);
     }
 
+      // 1 user molti follower
+      public function followers(): BelongsToMany
+      {
+          return $this->belongsToMany(Follower::class);
+      }
+
     // 1 user molte post
     public function posts(): HasMany
     {
@@ -49,16 +57,15 @@ class User extends Authenticatable
     }
 
      // 1 user molte reaction
-    public function reactions(): HasMany
-    {
+     public function reactions(): HasMany
+     {
 
-        return $this->hasMany(Reaction::class);
-    }
+         return $this->hasMany(Reaction::class);
+     }
 
     // 1 user molte post
-    public function posts(): HasMany
+    public function post(): HasMany
     {
-
         return $this->hasMany(Post::class);
     }
 
